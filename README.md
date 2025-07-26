@@ -1,7 +1,7 @@
 # Design and Deployment of a Multi-Client WAN with VRF Segmentation
 
 <p align="center">
-  <img src="https://www.gns3.com/assets/images/logo-colour.svg" alt="GNS3 Logo" width="250">
+  <img src="https://gns3.com/assets/custom/gns3/images/logo-colour.png" alt="GNS3 Logo" width="250">
 </p>
 <p align="center">
   <strong>A GNS3 simulation of a secure, scalable, and multi-tenant MPLS-based WAN.</strong>
