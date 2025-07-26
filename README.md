@@ -27,27 +27,27 @@ The core of the network leverages an **MPLS backbone** with **MP-BGP** to provid
 * **Multi-Tenant Architecture**: Supports multiple clients on a shared infrastructure with complete logical isolation.
 * **MPLS L3 VPNs**: Utilizes MPLS and MP-BGP to create scalable and secure VPNs for each client.
 * **Advanced VRF Segmentation**:
-    * [cite_start]**Client VRFs**: Isolate traffic between different clients across the WAN[cite: 1088, 1089, 1090].
-    * [cite_start]**Management VRF**: A dedicated VRF named `Gestion` is configured for secure, out-of-band management access[cite: 1091].
-    * [cite_start]**Internet/IXP VRFs**: Separate VRFs are deployed on border routers to manage external connectivity to multiple ISPs and an Internet Exchange Point[cite: 1092, 1093, 1094].
+    * **Client VRFs**: Isolate traffic between different clients across the WAN.
+    * **Management VRF**: A dedicated VRF named `Gestion` is configured for secure, out-of-band management access.
+    * **Internet/IXP VRFs**: Separate VRFs are deployed on border routers to manage external connectivity to multiple ISPs and an Internet Exchange Point.
 * **Robust Routing Protocols**:
-    * [cite_start]**IS-IS**: Used as the Interior Gateway Protocol (IGP) for fast convergence and scalability within the MPLS backbone[cite: 1097, 1109].
-    * [cite_start]**MP-BGP**: Manages the distribution of VPNv4 routes between PE routers, with BGP AS **65000** for the provider network[cite: 1110].
-    * [cite_start]**Redundant Route Reflectors**: Two route reflectors are used to ensure routing consistency and high availability[cite: 1110].
+    * **IS-IS**: Used as the Interior Gateway Protocol (IGP) for fast convergence and scalability within the MPLS backbone.
+    * **MP-BGP**: Manages the distribution of VPNv4 routes between PE routers, with BGP AS **65000** for the provider network.
+    * **Redundant Route Reflectors**: Two route reflectors are used to ensure routing consistency and high availability.
 * **End-to-End Segmentation**:
-    * [cite_start]Client traffic is segregated into distinct **VLANs** (e.g., 101, 102, 103) at the customer premises[cite: 1102, 1103, 1104].
-    * [cite_start]A dedicated **Management VLAN (500)** provides a secure management plane across all devices[cite: 1105].
+    * Client traffic is segregated into distinct **VLANs** (e.g., 101, 102, 103) at the customer premises.
+    * A dedicated **Management VLAN (500)** provides a secure management plane across all devices.
 
 ---
 
 ## 🌐 Network Topology & Components
 
-* **P (Provider) Routers**: Devices that form the high-speed core of the MPLS backbone. Their sole purpose is to perform label switching. [cite_start]They run IS-IS and MPLS but have no VRFs or BGP awareness[cite: 839, 906].
-* [cite_start]**PE (Provider Edge) Routers**: Multi-service edge routers that manage customer VRFs, run MP-BGP, and connect to customer sites[cite: 422, 584, 612, 861].
-* **Border Routers**: Specialized PE routers (`DCBGP1`, `DCBGP2`) that handle all external connectivity. [cite_start]They manage the ISP and IXP VRFs and peer with external networks[cite: 33, 771].
-* **CE (Customer Edge) Routers**: Routers like `CE-CLIENTE1-HERRERA` that belong to the customer. [cite_start]They run a standard eBGP session with the provider's PE router to exchange routes[cite: 369, 409].
-* [cite_start]**CPE (Customer Premises Equipment) Switches**: Layer 2 switches that act as the demarcation point between the provider's core switch and the customer's CE router[cite: 53, 354, 494].
-* [cite_start]**ISP & IXP Routers**: Simulated external networks that peer with the provider's Border Routers to provide internet connectivity[cite: 484, 761, 819].
+* **P (Provider) Routers**: Devices that form the high-speed core of the MPLS backbone. Their sole purpose is to perform label switching. They run IS-IS and MPLS but have no VRFs or BGP awareness.
+* **PE (Provider Edge) Routers**: Multi-service edge routers that manage customer VRFs, run MP-BGP, and connect to customer sites.
+* **Border Routers**: Specialized PE routers (`DCBGP1`, `DCBGP2`) that handle all external connectivity. They manage the ISP and IXP VRFs and peer with external networks.
+* **CE (Customer Edge) Routers**: Routers like `CE-CLIENTE1-HERRERA` that belong to the customer. They run a standard eBGP session with the provider's PE router to exchange routes.
+* **CPE (Customer Premises Equipment) Switches**: Layer 2 switches that act as the demarcation point between the provider's core switch and the customer's CE router.
+* **ISP & IXP Routers**: Simulated external networks that peer with the provider's Border Routers to provide internet connectivity.
 
 ---
 
@@ -55,23 +55,23 @@ The core of the network leverages an **MPLS backbone** with **MP-BGP** to provid
 
 ### Core Routing (IS-IS & MPLS)
 
-The stability of the network is built on the core. [cite_start]IS-IS is enabled on all P, PE, and Border routers within the provider network[cite: 527, 839]. [cite_start]It is responsible for advertising the loopback addresses of the PE/Border routers, which are used to establish iBGP peerings[cite: 527, 1097]. [cite_start]MPLS is enabled on all core-facing interfaces, allowing P routers to switch packets based on labels[cite: 528, 529, 530].
+The stability of the network is built on the core. IS-IS is enabled on all P, PE, and Border routers within the provider network. It is responsible for advertising the loopback addresses of the PE/Border routers, which are used to establish iBGP peerings. MPLS is enabled on all core-facing interfaces, allowing P routers to switch packets based on labels.
 
 ### Internal BGP (iBGP) for VPNs
 
-The MPLS VPN service is powered by Multi-Protocol BGP. [cite_start]All PE and Border routers peer with two redundant Route Reflectors[cite: 1110, 341]. [cite_start]The `address-family vpnv4` is used to exchange customers' routes, which are prepended with a Route Distinguisher to ensure uniqueness and carry Route Target communities to control the import/export of routes into the correct VRFs[cite: 1111, 342].
+The MPLS VPN service is powered by Multi-Protocol BGP. All PE and Border routers peer with two redundant Route Reflectors. The `address-family vpnv4` is used to exchange customers' routes, which are prepended with a Route Distinguisher to ensure uniqueness and carry Route Target communities to control the import/export of routes into the correct VRFs.
 
 ### Customer Edge Routing (eBGP)
 
 The connection to each customer is standardized and robust.
-* [cite_start]Each customer is placed in a unique Autonomous System (e.g., Client 1 is in **AS 65010**, Client 2 in **AS 65020**, and Client 3 in **AS 65030**)[cite: 417, 562, 1132].
-* The customer's CE router establishes a simple eBGP session with the provider's PE router from within its designated VRF and VLAN. [cite_start]For example, `CE-CLIENTE1-HERRERA` (in AS 65010) peers with the local PE at `10.20.10.9` (in AS 65000)[cite: 377].
-* [cite_start]Each CE router advertises its internal networks, such as a `Loopback10` interface, into BGP for end-to-end reachability tests[cite: 372, 378].
-* For added resiliency, some CE routers are configured to be **multi-homed**, peering with more than one PE router. [cite_start]For example, `CE-CLIENTE1-HERRERA` peers with its local PE (`10.20.10.9`) and a PE at a different site (`10.20.10.21`)[cite: 377].
+* Each customer is placed in a unique Autonomous System (e.g., Client 1 is in **AS 65010**, Client 2 in **AS 65020**, and Client 3 in **AS 65030**).
+* The customer's CE router establishes a simple eBGP session with the provider's PE router from within its designated VRF and VLAN. For example, `CE-CLIENTE1-HERRERA` (in AS 65010) peers with the local PE at `10.20.10.9` (in AS 65000).
+* Each CE router advertises its internal networks, such as a `Loopback10` interface, into BGP for end-to-end reachability tests.
+* For added resiliency, some CE routers are configured to be **multi-homed**, peering with more than one PE router. For example, `CE-CLIENTE1-HERRERA` peers with its local PE (`10.20.10.9`) and a PE at a different site (`10.20.10.21`).
 
 ### External & Internet Routing (eBGP)
 
-Internet access is handled exclusively by the Border Routers. [cite_start]These routers peer with the external ISP and IXP routers from within dedicated VRFs (`ISP1`, `ISP2`, `IXP`)[cite: 34, 35, 772, 773]. [cite_start]For example, `DCBGP1` peers with `ISP1` (AS 52100) from within the `ISP1` VRF[cite: 784]. [cite_start]The external ISP routers advertise a default route into BGP, which can then be selectively redistributed into the client VRFs that require internet service[cite: 489, 766].
+Internet access is handled exclusively by the Border Routers. These routers peer with the external ISP and IXP routers from within dedicated VRFs (`ISP1`, `ISP2`, `IXP`). For example, `DCBGP1` peers with `ISP1` (AS 52100) from within the `ISP1` VRF. The external ISP routers advertise a default route into BGP, which can then be selectively redistributed into the client VRFs that require internet service.
 
 ---
 
@@ -107,7 +107,7 @@ Once the network has converged, you can perform the following tests:
 
 * **Client Reachability**: From a CE router (e.g., `CE-CLIENTE1-CALLE50`), ping the loopback address of another CE router belonging to the *same client* (e.g., `CE-CLIENTE1-VERAGUAS` at `10.107.0.4`). The ping should succeed.
 * **Client Isolation**: Attempt to ping a loopback address of a CE router belonging to a *different client* (e.g., ping `10.108.0.9` from `CE-CLIENTE1-CALLE50`). The ping should fail.
-* [cite_start]**Secure Management**: From the designated management station, use Telnet to access the various switches and routers via their management IP addresses in VLAN 500. Attempts from other IPs should be blocked by `access-class 20`[cite: 1120, 1121].
+* **Secure Management**: From the designated management station, use Telnet to access the various switches and routers via their management IP addresses in VLAN 500. Attempts from other IPs should be blocked by `access-class 20`.
 * **BGP Peering**:
     * On a PE router, inspect VPN routes with `show ip bgp vpnv4 all summary`.
     * On a CE router, verify its connection to the provider with `show ip bgp summary`.
