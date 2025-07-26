@@ -19,6 +19,9 @@
 This project showcases the design and implementation of a sophisticated multi-branch Wide Area Network (WAN) built and simulated entirely within **GNS3**. The architecture is designed to serve multiple clients, ensuring complete traffic isolation through a combination of Layer 2 VLANs and Layer 3 VRFs, alongside secure, centralized management.
 
 The core of the network leverages an **MPLS backbone** with **MP-BGP** to provide scalable Layer 3 VPN services. Virtual Routing and Forwarding (**VRF**) instances create logical separation between clients, management, and internet traffic. The topology is a complete model of a service provider network, including a core, multiple customer sites, dedicated internet gateways, and connections to simulated ISPs.
+<p align="center">
+  <img src="https://github.com/ananibel/Multi-Client-WAN-Network-with-VRF-Segmentation/blob/9e95a02d688b5f5011787e1ba161b6f03afbf456/SIMULATION.jpg" alt="Simulation ScreenShot">
+</p>
 
 ---
 
