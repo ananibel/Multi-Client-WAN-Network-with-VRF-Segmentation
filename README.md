@@ -22,7 +22,7 @@ The core of the network leverages an **MPLS backbone** with **MP-BGP** to provid
 
 ---
 
-## ✨ Key Features & Technologies
+## 🌐 Key Features & Technologies
 
 * **Multi-Tenant Architecture**: Supports multiple clients on a shared infrastructure with complete logical isolation.
 * **MPLS L3 VPNs**: Utilizes MPLS and MP-BGP to create scalable and secure VPNs for each client.
@@ -51,7 +51,7 @@ The core of the network leverages an **MPLS backbone** with **MP-BGP** to provid
 
 ---
 
-## 🔬 Routing Architecture in Detail
+## 🌐 Routing Architecture in Detail
 
 ### Core Routing (IS-IS & MPLS)
 
